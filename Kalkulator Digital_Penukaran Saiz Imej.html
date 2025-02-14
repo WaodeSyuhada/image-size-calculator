@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kalkulator Saiz Imej</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        input, select, button {
+            width: 100%;
+            margin: 10px 0;
+            padding: 10px;
+            font-size: 16px;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Kalkulator Saiz Imej</h2>
+        
+        <h3>Formula Jumlah Piksel:</h3>
+        <p>Jumlah Piksel = Lebar × Tinggi</p>
+        <input type="number" id="width" placeholder="Masukkan lebar (px)" min="0">
+        <input type="number" id="height" placeholder="Masukkan tinggi (px)" min="0">
+        <button onclick="calculatePixels()">Kira Jumlah Piksel</button>
+        <p id="pixelOutput"></p>
+        
+        <h3>Formula Saiz Fail:</h3>
+        <p>Saiz Fail = Jumlah Piksel × Byte</p>
+        <input type="number" id="totalPixels" placeholder="Masukkan jumlah piksel" min="0">
+        <input type="number" id="bytesPerPixel" placeholder="Masukkan byte per piksel" min="0" step="0.1">
+        <button onclick="calculateFileSize()">Saiz Imej</button>
+        <p id="fileSizeOutput"></p>
+        
+        <h3>Kalkulator Penukaran Saiz Imej:</h3>
+        <input type="number" id="inputValue" placeholder="Masukkan nilai" min="0">
+        <select id="inputUnit">
+            <option value="bit">Bit</option>
+            <option value="byte">Byte</option>
+            <option value="kb">Kilobyte (KB)</option>
+            <option value="mb">Megabyte (MB)</option>
+            <option value="gb">Gigabyte (GB)</option>
+            <option value="tb">Terabyte (TB)</option>
+        </select>
+        <button onclick="convertSize()">Tukar</button>
+        <h3>Hasil Penukaran:</h3>
+        <p id="output"></p>
+    </div>
+    
+    <div class="footer">
+        <p>Dibangunkan oleh: Cikgu Syazwani</p>
+    </div>
+
+    <script>
+        function calculatePixels() {
+            let width = parseInt(document.getElementById("width").value);
+            let height = parseInt(document.getElementById("height").value);
+            if (isNaN(width) || isNaN(height) || width < 0 || height < 0) {
+                document.getElementById("pixelOutput").innerHTML = "Sila masukkan nilai yang sah untuk lebar dan tinggi.";
+                return;
+            }
+            let totalPixels = width * height;
+            document.getElementById("pixelOutput").innerHTML = `Jumlah Piksel: ${totalPixels} px`;
+            document.getElementById("totalPixels").value = totalPixels;
+        }
+
+        function calculateFileSize() {
+            let totalPixels = parseInt(document.getElementById("totalPixels").value);
+            let bytesPerPixel = parseFloat(document.getElementById("bytesPerPixel").value);
+            if (isNaN(totalPixels) || isNaN(bytesPerPixel) || totalPixels < 0 || bytesPerPixel < 0) {
+                document.getElementById("fileSizeOutput").innerHTML = "Sila masukkan nilai yang sah untuk jumlah piksel dan byte per piksel.";
+                return;
+            }
+            let fileSize = totalPixels * bytesPerPixel;
+            document.getElementById("fileSizeOutput").innerHTML = `Saiz Fail: ${fileSize} Byte`;
+        }
+
+        function convertSize() {
+            let value = parseFloat(document.getElementById("inputValue").value);
+            let unit = document.getElementById("inputUnit").value;
+            let sizes = { bit: 1, byte: 8, kb: 8192, mb: 8388608, gb: 8589934592, tb: 8796093022208 };
+            
+            if (isNaN(value) || value < 0) {
+                document.getElementById("output").innerHTML = "Sila masukkan nombor yang sah.";
+                return;
+            }
+            
+            let bitValue = value * sizes[unit];
+            let result = `
+                ${bitValue} Bit<br>
+                ${bitValue / 8} Byte<br>
+                ${bitValue / 8192} KB<br>
+                ${bitValue / 8388608} MB<br>
+                ${bitValue / 8589934592} GB<br>
+                ${bitValue / 8796093022208} TB<br>
+            `;
+            
+            document.getElementById("output").innerHTML = result;
+        }
+    </script>
+</body>
+</html>
